@@ -19,6 +19,7 @@ rl.question("Enter Input :  ", function (input) {
   inputF(input);
 });
 
+// Inventory Stock
 const MyInventory = {
   uk: {
     mask: {
@@ -48,6 +49,8 @@ leftOvers.maskLeftuk = MyInventory.uk.mask.quantity
 leftOvers.maskLeftgermany = MyInventory.germany.mask.quantity
 leftOvers.glovesLeftuk = MyInventory.uk.gloves.quantity
 leftOvers.glovesLeftgermany = MyInventory.germany.gloves.quantity
+
+//input prompt
 const inputF = (input) => {
   var finalArr = [];
   input.split(":").forEach((element) => {
@@ -57,7 +60,7 @@ const inputF = (input) => {
   if (finalArr.length >= 5 && finalArr.length <= 6) {
     let s = ""
     s = s + findInInv(finalArr, finalArr.length)
-    if (s != undefined && s != "") {
+    if (s != "") {
       console.log(s);
     }
     bill = 0
@@ -77,6 +80,7 @@ const inputF = (input) => {
   }
 };
 
+// function to split the input and check for quantity in inventory
 function findInInv(arr, arrLen) {
   var country;
   var passPort = "";
@@ -101,22 +105,17 @@ function findInInv(arr, arrLen) {
   if (productQty1 <= MyInventory.uk[productName1].quantity + MyInventory.germany[productName1].quantity) {
     price(productQty1, productName1, country, passPort)
   } else {
-    outOfStock("OUT_OF_STOCK" + ":" + MyInventory.uk.mask.quantity + ":" + MyInventory.germany.mask.quantity + ":" + MyInventory.uk.gloves.quantity + ":" + MyInventory.germany.gloves.quantity);
-    return ""
+    return "OUT_OF_STOCK" + ":" + MyInventory.uk.mask.quantity + ":" + MyInventory.germany.mask.quantity + ":" + MyInventory.uk.gloves.quantity + ":" + MyInventory.germany.gloves.quantity
   }
   if (productQty2 <= MyInventory.uk[productName2].quantity + MyInventory.germany[productName2].quantity) {
     price(productQty2, productName2, country, passPort)
   } else {
-    outOfStock("OUT_OF_STOCK" + ":" + MyInventory.uk.mask.quantity + ":" + MyInventory.germany.mask.quantity + ":" + MyInventory.uk.gloves.quantity + ":" + MyInventory.germany.gloves.quantity);
-    return ""
+    return "OUT_OF_STOCK" + ":" + MyInventory.uk.mask.quantity + ":" + MyInventory.germany.mask.quantity + ":" + MyInventory.uk.gloves.quantity + ":" + MyInventory.germany.gloves.quantity
   }
   return bill + ":" + leftOvers.maskLeftuk + ":" + leftOvers.maskLeftgermany + ":" + leftOvers.glovesLeftuk + ":" + leftOvers.glovesLeftgermany
 };
 
-const outOfStock = (str) => {
-  console.log(str)
-}
-
+// function to calculate minimum price
 function minimizeBill(name, qty, bill, passPort) {
   var prevBill = bill
   var minImport = 10
@@ -136,6 +135,8 @@ function minimizeBill(name, qty, bill, passPort) {
   }
   return [prevBill, minImport]
 }
+
+//function to calculate the price of the given product
 const price = (quantity, itemName, country, passPort) => {
   if (country == "uk") {
     let toBeImported = 0;
@@ -187,6 +188,8 @@ const price = (quantity, itemName, country, passPort) => {
   }
 };
 
+
+//validation to check if the passport is local or not
 function isPassLocal(str, identify) {
   if (identify == "uk") {
     return str.substring(0, 1) == "B" && isNumber(str.substring(1, 4)) && isOnlyChar.test(str.substring(4, 6)) && isAlphaNumeric.test(str.substring(6))
